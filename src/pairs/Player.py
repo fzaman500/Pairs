@@ -1,10 +1,13 @@
 class Player:
-    def __init__(self, original_deck, points=0, hand_state=None):
+    def __init__(self, original_deck, points=0, hand_state=None, hand_capacity=None):
         self.original_deck = original_deck
         self.points = points
         if hand_state is None:
             hand_state = self.hand_state = {card_type: 0 for card_type in original_deck}
         self.hand_state = hand_state
+        if hand_capacity is None:
+            hand_capacity = self.hand_capacity = {card_type: 1 for card_type in original_deck}
+        self.hand_capacity = hand_capacity
 
     def increase_points(self, n):
         self.points += n
@@ -17,6 +20,7 @@ class Player:
             self.hand_state[card_type] = 0
 
     def copy(self):
-        c =
+        c = Player(self.original_deck, self.points, self.hand_state, self.hand_capacity)
+        return c
 
 
