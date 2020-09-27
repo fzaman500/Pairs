@@ -6,7 +6,7 @@ class Player:
             hand_state = self.hand_state = {card_type: 0 for card_type in original_deck}
         self.hand_state = hand_state
         if hand_capacity is None:
-            hand_capacity = self.hand_capacity = {card_type: 1 for card_type in original_deck}
+            hand_capacity = {card_type: 1 for card_type in original_deck}
         self.hand_capacity = hand_capacity
 
     def increase_points(self, n):
@@ -19,8 +19,8 @@ class Player:
         for card_type in self.hand_state:
             self.hand_state[card_type] = 0
 
-    def copy(self):
-        c = Player(self.original_deck, self.points, self.hand_state, self.hand_capacity)
+    def deepcopy(self):
+        c = Player(self.original_deck.deepcopy(), self.points, self.hand_state.deepcopy(), self.hand_capacity.deepcopy())
         return c
 
 

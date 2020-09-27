@@ -13,8 +13,8 @@ class GameState:
             self.players = deque(players)
             self.num_players = len(self.players)
 
-    def copy(self):
-        c = GameState(self.deck, self.target_score, self.players)
+    def deepcopy(self):
+        c = GameState(self.deck.deepcopy(), self.target_score, self.players.deepcopy())
         return c
 
     def draw_next(self):
@@ -25,7 +25,7 @@ class GameState:
 
     def game_to_tuple(self):
         curr_deck_state = list(intMapper(self.deck.values(), self.deck.curr_deck.values()))
-        curr_player_states = [intMapper(self.deck.values(), player.hand_state.values())
+        curr_player_states = [intMapper(player.hand_capacity, player.hand_state.values())
                               for player in self.players]
         curr_state = tuple(curr_deck_state.extend(curr_player_states))
         return curr_state

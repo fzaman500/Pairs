@@ -41,8 +41,8 @@ class Deck:
         for card_type, freq in cards.items():
             self.discards[card_type] += freq
 
-    def copy(self):
-        c = Deck(self.original_deck, self.curr_deck, self.discards, self.shuffling_limit)
+    def deepcopy(self):
+        c = Deck(self.original_deck.deepcopy(), self.curr_deck.deepcopy(), self.discards.deepcopy(), self.shuffling_limit)
         return c
 
 
