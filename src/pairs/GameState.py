@@ -25,7 +25,7 @@ class GameState:
 
     def game_to_tuple(self):
         curr_deck_state = list(intMapper(self.deck.values(), self.deck.curr_deck.values()))
-        curr_player_states = [intMapper(player.hand_capacity, player.hand_state.values())
+        curr_player_states = [intMapper(player.hand_capacity.values(), player.hand_state.values())
                               for player in self.players]
         curr_state = tuple(curr_deck_state.extend(curr_player_states))
         return curr_state
