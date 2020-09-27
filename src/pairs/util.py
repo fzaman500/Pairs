@@ -10,5 +10,5 @@ def intMapper(capacity_list, value_list):
     for i in range(1, len(list_products)):
         list_products[i] = list_products[i]*list_products[i-1]
     for i in range(len(capacity_list)):
-        value += value_list[i]*list_products[i]
+        value += value_list[i] * list_products[i]
     return value
