@@ -2,8 +2,7 @@ from numpy.random import choice
 import random
 
 class Deck:
-    # How are storing the cards structure? Is it a list? Is it a dict?
-    # Array
+    # How storing the cards structure? Is it a list? Is it a dict?
     # Dictionary: Key (Card type) -> Value (Number of how many cards there are)
     # How do you randomly generate a card?
     # Use numpy.choice and pass in a probability distribution
