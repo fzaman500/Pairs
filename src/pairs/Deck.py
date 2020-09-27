@@ -41,6 +41,10 @@ class Deck:
         for card_type, freq in cards.items():
             self.discards[card_type] += freq
 
+    def copy(self):
+        c = Deck(self.original_deck, self.curr_deck, self.discards, self.shuffling_limit)
+        return c
+
 
    # def triangular(self, m):
    #     self.num_cards = [i for i in range(1, m+1) for j in range(i)]

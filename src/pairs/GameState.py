@@ -11,6 +11,11 @@ class GameState:
         elif isinstance(players, Iterable):
             self.players = deque(players)
             self.num_players = len(self.players)
-        self.players = players
+
+    def draw_next(self):
+        pass
+
+    def fold_next(self):
+        pass
 
 

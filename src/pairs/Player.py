@@ -16,4 +16,7 @@ class Player:
         for card_type in self.hand_state:
             self.hand_state[card_type] = 0
 
+    def copy(self):
+        c =
+
 
