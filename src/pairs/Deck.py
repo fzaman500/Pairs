@@ -2,8 +2,7 @@ from numpy.random import choice
 import random
 
 class Deck:
-    # How are storing the cards structure? Is it a list? Is it a dict?
-    # Array
+    # How storing the cards structure? Is it a list? Is it a dict?
     # Dictionary: Key (Card type) -> Value (Number of how many cards there are)
     # How do you randomly generate a card?
     # Use numpy.choice and pass in a probability distribution
@@ -41,6 +40,10 @@ class Deck:
     def add_dict_discards(self, cards):
         for card_type, freq in cards.items():
             self.discards[card_type] += freq
+
+    def deepcopy(self):
+        c = Deck(self.original_deck.deepcopy(), self.curr_deck.deepcopy(), self.discards.deepcopy(), self.shuffling_limit)
+        return c
 
 
    # def triangular(self, m):
