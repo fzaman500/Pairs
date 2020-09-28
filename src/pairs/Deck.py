@@ -19,7 +19,7 @@ class Deck:
         self.num_total_cards = sum(self.original_deck.values())
         self.shuffling_limit = shuffling_limit
 
-    def draw_card(self):
+    def draw_random_card(self):
         if sum(self.curr_deck.values()) <= self.shuffling_limit:
             self.shuffle_discards()
         probabilities = [float(card_frequency) / sum(self.curr_deck.values())
@@ -27,6 +27,18 @@ class Deck:
         draw = choice(list(self.curr_deck.keys()), 1, False, probabilities)
         self.curr_deck[draw] -= 1
         return draw
+
+    def draw_specific_card(self, i):
+        if sum(self.curr_deck.values()) <= self.shuffling_limit:
+            self.shuffle_discards()
+        possible = []
+        for card in self.curr_deck:
+            if self.curr_deck[card] != 0:
+                possible.append(card)
+        draw = possible[i]
+        self.curr_deck[draw] -= 1
+        return draw
+
 
     def shuffle_discards(self):
         for card_type in self.curr_deck:
