@@ -15,39 +15,36 @@ class GameState:
             self.num_players = len(self.players)
 
     def deepcopy(self):
-        c = GameState(self.deck.deepcopy(), self.target_score, self.players.deepcopy())
+        c = GameState(self.deck.deepcopy(), self.target_score,
+                      deque(player.deepcopy() for player in self.players))
         return c
 
-    def draw_next(self, game):
-        curr_state = game.deepcopy()
-        new_state = curr_state.deepcopy()
+    def next_draw_states(self):
         states = []
-        possible = []
-        for card in curr_state.curr_deck:
-            if curr_state.curr_deck[card] != 0:
-                possible.append(card)
-        for i in range(len(possible)):
-            new_state.players[0].add_card(curr_state.deck.draw_specific_card(i))
-            states.append(new_state)
-            new_state = curr_state.deepcopy()
+        for card_type in self.deck.curr_deck:
+            if self.deck.curr_deck[card_type] > 0:
+                new_state = self.deepcopy()
+                new_state.deck.draw_specific_card(card_type)
+                new_state.players[0].add_card(card_type)
+                new_state.players.rotate(-1)
+                states.append(new_state)
         return states
 
-    def fold_next(self, game):
-        curr_state = game.deepcopy()
-        minimum = min([player.points for player in game.players])
-        game.players[0].points += minimum
-        for player in game.players:
-            game.deck.add_dict_discards(player.hand_state)
+    def next_fold_state(self):
+        curr_state = self.deepcopy()
+        minimum = min(
+            min(card_type for card_type, freq in player.hand_state.items() if freq > 0)
+            for player in curr_state.players)
+        curr_state.players[0].points += minimum
+        for player in curr_state.players:
+            curr_state.deck.add_dict_discards(player.hand_state)
             player.reset()
-        curr_state.players.rotate(1)
+        curr_state.players.rotate(-1)
         return curr_state
 
     def ending_state(self):
-        for i in range(len(self.players)):
-            if self.players[i].points >= self.target_score:
-                winners = np.ones(self.num_players)
-                winners[i] = 0
-                return winners
+        if any(player.points >= self.target_score for player in self.players):
+            return np.array([float(player.points < self.target_score) for player in self.players])
         return None
 
     def game_to_tuple(self):

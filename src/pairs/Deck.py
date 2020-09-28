@@ -19,26 +19,18 @@ class Deck:
         self.num_total_cards = sum(self.original_deck.values())
         self.shuffling_limit = shuffling_limit
 
-    def draw_random_card(self):
+    def draw_specific_card(self, draw_card):
+        if self.curr_deck[draw_card] <= 0:
+            raise ValueError("Draw card {} is not present in the current deck {}".format(draw_card, self.curr_deck))
+        self.curr_deck[draw_card] -= 1
         if sum(self.curr_deck.values()) <= self.shuffling_limit:
             self.shuffle_discards()
+
+    def draw_random_card(self):
         probabilities = [float(card_frequency) / sum(self.curr_deck.values())
                          for card_type, card_frequency in self.curr_deck.items()]
         draw = choice(list(self.curr_deck.keys()), 1, False, probabilities)
-        self.curr_deck[draw] -= 1
-        return draw
-
-    def draw_specific_card(self, i):
-        if sum(self.curr_deck.values()) <= self.shuffling_limit:
-            self.shuffle_discards()
-        possible = []
-        for card in self.curr_deck:
-            if self.curr_deck[card] != 0:
-                possible.append(card)
-        draw = possible[i]
-        self.curr_deck[draw] -= 1
-        return draw
-
+        self.curr_deck.draw_specific_card(draw)
 
     def shuffle_discards(self):
         for card_type in self.curr_deck:
