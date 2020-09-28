@@ -31,16 +31,16 @@ class GameState:
         return states
 
     def next_fold_state(self):
-        curr_state = self.deepcopy()
+        next_fold_state = self.deepcopy()
         minimum = min(
             min(card_type for card_type, freq in player.hand_state.items() if freq > 0)
-            for player in curr_state.players)
-        curr_state.players[0].points += minimum
-        for player in curr_state.players:
-            curr_state.deck.add_dict_discards(player.hand_state)
+            for player in next_fold_state.players)
+        next_fold_state.players[0].points += minimum
+        for player in next_fold_state.players:
+            next_fold_state.deck.add_dict_discards(player.hand_state)
             player.reset()
-        curr_state.players.rotate(-1)
-        return curr_state
+        next_fold_state.players.rotate(-1)
+        return next_fold_state
 
     def ending_state(self):
         if any(player.points >= self.target_score for player in self.players):
