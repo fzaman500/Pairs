@@ -22,12 +22,13 @@ class GameState:
     def next_draw_states(self):
         states = []
         for card_type in self.deck.curr_deck:
+            total_cards = sum(self.deck.curr_deck.values())
             if self.deck.curr_deck[card_type] > 0:
                 new_state = self.deepcopy()
                 new_state.deck.draw_specific_card(card_type)
                 new_state.players[0].add_card(card_type)
                 new_state.players.rotate(-1)
-                states.append(new_state)
+                states.append((new_state, self.deck.curr_deck[card_type] / total_cards))
         return states
 
     def next_fold_state(self):
@@ -35,6 +36,8 @@ class GameState:
         minimum = min(
             min(card_type for card_type, freq in player.hand_state.items() if freq > 0)
             for player in next_fold_state.players)
+        if sum(minimum) == 0:
+            return None
         next_fold_state.players[0].points += minimum
         for player in next_fold_state.players:
             next_fold_state.deck.add_dict_discards(player.hand_state)
@@ -42,16 +45,21 @@ class GameState:
         next_fold_state.players.rotate(-1)
         return next_fold_state
 
-    def ending_state(self):
+    # ending_state returns None if the game state is not an ending state
+    # otherwise, it returns a numpy array representing the probabilities of winning
+    # for each of the players in the game
+    def ending_probabilities(self):
         if any(player.points >= self.target_score for player in self.players):
             return np.array([float(player.points < self.target_score) for player in self.players])
         return None
 
     def game_to_tuple(self):
-        curr_deck_state = list(intMapper(self.deck.values(), self.deck.curr_deck.values()))
-        curr_player_states = [intMapper(player.hand_capacity.values(), player.hand_state.values())
+        curr_deck_state = [intMapper(self.deck.values(), self.deck.curr_deck.values())]
+        curr_player_states = [intMapper(player.hand_capacity.values().append(self.target_score),
+                                        player.hand_state.values().append(player.points))
                               for player in self.players]
-        curr_state = tuple(curr_deck_state.extend(curr_player_states))
+        curr_deck_state.extend(curr_player_states)
+        curr_state = tuple(curr_deck_state)
         return curr_state
 
 
