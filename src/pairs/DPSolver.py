@@ -1,5 +1,7 @@
 from src.pairs.util import intMapper
 import numpy as np
+
+
 class DPSolver:
     def __init__(self, game):
         deck_states = np.prod([card + 1 for card in game.deck.values])
@@ -32,14 +34,3 @@ class DPSolver:
                 self.action_table[table_index] = False
                 self.dp_table[table_index] = fold_probabilities
         return self.dp_table[table_index]
-
-
-
-
-
-
-
-
-
-
->>>>>>> master
