@@ -1,5 +1,6 @@
 from numpy.random import choice
 import random
+import copy
 
 class Deck:
     # How storing the cards structure? Is it a list? Is it a dict?
@@ -46,7 +47,8 @@ class Deck:
             self.discards[card_type] += freq
 
     def deepcopy(self):
-        c = Deck(self.original_deck.deepcopy(), self.curr_deck.deepcopy(), self.discards.deepcopy(), self.shuffling_limit)
+        c = Deck(copy.deepcopy(self.original_deck), copy.deepcopy(self.curr_deck), copy.deepcopy(self.discards),
+                 self.shuffling_limit)
         return c
 
 

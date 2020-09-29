@@ -4,12 +4,13 @@ import numpy as np
 
 class DPSolver:
     def __init__(self, game):
-        deck_states = np.prod([card + 1 for card in game.deck.values])
+        deck_states = np.prod([card + 1 for card in game.deck.original_deck.values()])
         player_states = np.prod([value + 1 for value in game.players[0].hand_capacity.values()]) * game.target_score
-        dimensions = [deck_states] + [player_states] * game.numPlayers
+        dimensions = [deck_states] + [player_states] * game.num_players
         self.action_table = np.zeros(tuple(dimensions), dtype=bool)
-        dimensions.append(game.numPlayers)
+        dimensions.append(game.num_players)
         self.dp_table = np.empty(tuple(dimensions))
+        self.dp_table[:] = np.nan
         self.game = game
 
     # Solve will return a 1-dimensional numpy array
@@ -23,8 +24,12 @@ class DPSolver:
         if ending_probabilities is not None:
             return ending_probabilities
         table_index = game_state.game_to_tuple()
-        if self.dp_table[table_index][0] == np.nan:
-            fold_probabilities = np.roll(self.solve(game_state.next_fold_state()), 1)
+        print(table_index)
+        print(self.dp_table.shape)
+        if np.isnan(self.dp_table[table_index][0]):
+            print('recursing?')
+            fold_state = game_state.next_fold_state()
+            fold_probabilities = np.roll(self.solve(fold_state), 1) if fold_state is not None else None
             draw_probabilities = np.roll(
                 sum(prob * self.solve(draw_state) for draw_state, prob in game_state.next_draw_states()), 1)
             if fold_probabilities is None or draw_probabilities[0] > fold_probabilities[0]:
@@ -34,3 +39,9 @@ class DPSolver:
                 self.action_table[table_index] = False
                 self.dp_table[table_index] = fold_probabilities
         return self.dp_table[table_index]
+
+    def get_dp_table(self):
+        return self.dp_table
+
+    def get_action_table(self):
+        return self.action_table
