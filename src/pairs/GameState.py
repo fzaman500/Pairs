@@ -54,11 +54,20 @@ class GameState:
         return None
 
     def game_to_tuple(self):
+<<<<<<< HEAD
         curr_deck_state = [intMapper(self.deck.original_deck.values(), self.deck.curr_deck.values())]
         curr_player_states = [intMapper(player.hand_capacity.values().append(self.target_score),
                                         player.hand_state.values().append(player.points))
                               for player in self.players]
         curr_state = tuple(curr_deck_state + curr_player_states)
+=======
+        curr_deck_state = [intMapper(self.deck.values(), self.deck.curr_deck.values())]
+        curr_player_states = [intMapper(player.hand_capacity.values().append(self.target_score),
+                                        player.hand_state.values().append(player.points))
+                              for player in self.players]
+        curr_deck_state.extend(curr_player_states)
+        curr_state = tuple(curr_deck_state)
+>>>>>>> master
         return curr_state
 
 
