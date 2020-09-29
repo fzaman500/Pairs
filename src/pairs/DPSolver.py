@@ -5,7 +5,7 @@ class DPSolver:
         deck_states = np.prod([card + 1 for card in game.deck.values])
         player_states = np.prod([value + 1 for value in game.players[0].hand_capacity.values()]) * game.target_score
         dimensions = [deck_states] + [player_states] * game.numPlayers
-        self.action_table = np.false(tuple(dimensions))
+        self.action_table = np.zeros(tuple(dimensions), dtype=bool)
         dimensions.append(game.numPlayers)
         self.dp_table = np.empty(tuple(dimensions))
         self.game = game
@@ -13,10 +13,9 @@ class DPSolver:
     # Solve will return a 1-dimensional numpy array
     # representing the probabilities of winning for each of the players
     def solve(self, game_state):
-        # 1. Check if it's an ending game state. If it is, return that probability array
-        # 2. Check if it already exists in the dp_table, if it doesn't, solve for the value (meat)
-        # 2.1 ...
-        # 2.2 ...
+        # 1. Check if game state is an ending game state. If it is, return that probability array
+        # 2. Check if game state already exists in the dp_table, if it doesn't, solve for the
+        #       fold probabilities and hit probabilities and update action table and dp table
         # 3. Return answer
         ending_probabilities = game_state.ending_probabilities()
         if ending_probabilities is not None:
@@ -33,12 +32,3 @@ class DPSolver:
                 self.action_table[table_index] = False
                 self.dp_table[table_index] = fold_probabilities
         return self.dp_table[table_index]
-
-
-
-
-
-
-
-
-
