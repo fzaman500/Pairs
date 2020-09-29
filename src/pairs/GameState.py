@@ -33,10 +33,10 @@ class GameState:
 
     def next_fold_state(self):
         next_fold_state = self.deepcopy()
-        minimum = min(
-            min(card_type for card_type, freq in player.hand_state.items() if freq > 0)
-            for player in next_fold_state.players)
-        if sum(minimum) == 0:
+        minimum = min((min(
+            (card_type for card_type, freq in player.hand_state.items() if freq > 0), default=float('inf'))
+            for player in next_fold_state.players), default=float('inf'))
+        if minimum == float('inf'):
             return None
         next_fold_state.players[0].points += minimum
         for player in next_fold_state.players:
@@ -54,13 +54,9 @@ class GameState:
         return None
 
     def game_to_tuple(self):
-        curr_deck_state = [intMapper(self.deck.values(), self.deck.curr_deck.values())]
+        curr_deck_state = [intMapper(self.deck.original_deck.values(), self.deck.curr_deck.values())]
         curr_player_states = [intMapper(player.hand_capacity.values().append(self.target_score),
                                         player.hand_state.values().append(player.points))
                               for player in self.players]
-        curr_deck_state.extend(curr_player_states)
-        curr_state = tuple(curr_deck_state)
+        curr_state = tuple(curr_deck_state + curr_player_states)
         return curr_state
-
-
-
