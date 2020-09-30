@@ -24,10 +24,7 @@ class DPSolver:
         if ending_probabilities is not None:
             return ending_probabilities
         table_index = game_state.game_to_tuple()
-        print(table_index)
-        print(self.dp_table.shape)
         if np.isnan(self.dp_table[table_index][0]):
-            print('recursing?')
             fold_state = game_state.next_fold_state()
             fold_probabilities = np.roll(self.solve(fold_state), 1) if fold_state is not None else None
             draw_probabilities = np.roll(

@@ -5,10 +5,10 @@ class Player:
         self.original_deck = original_deck
         self.points = points
         if hand_state is None:
-            hand_state = self.hand_state = {card_type: 0 for card_type in original_deck.original_deck}
+            hand_state = self.hand_state = {card_type: 0 for card_type in original_deck}
         self.hand_state = hand_state
         if hand_capacity is None:
-            hand_capacity = {card_type: 1 for card_type in original_deck.original_deck}
+            hand_capacity = {card_type: 1 for card_type in original_deck}
         self.hand_capacity = hand_capacity
 
     def increase_points(self, n):

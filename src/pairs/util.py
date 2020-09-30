@@ -12,5 +12,4 @@ def intMapper(capacity_list, value_list):
         list_products[i] = list_products[i] * list_products[i-1]
     for i in range(len(capacity_list)):
         value += values_list[i] * list_products[i]
-    print(f"Crunching {value_list} with {capacity_list}")
     return value

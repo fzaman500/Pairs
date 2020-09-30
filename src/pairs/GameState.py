@@ -11,7 +11,7 @@ class GameState:
         self.target_score = target_score
         if isinstance(players, int):
             self.num_players = players
-            self.players = deque(Player(deck) for _ in range(self.num_players))
+            self.players = deque(Player(deck.original_deck) for _ in range(self.num_players))
         elif isinstance(players, Iterable):
             self.players = deque(players)
             self.num_players = len(self.players)
@@ -56,8 +56,6 @@ class GameState:
     # otherwise, it returns a numpy array representing the probabilities of winning
     # for each of the players in the game
     def ending_probabilities(self):
-        print("Checking ending probabilities")
-        print([player.points for player in self.players])
         if any(player.points >= self.target_score for player in self.players):
             return np.array([float(player.points < self.target_score) for player in self.players])
         return None
@@ -69,3 +67,7 @@ class GameState:
                               for player in self.players]
         curr_state = tuple(curr_deck_state + curr_player_states)
         return curr_state
+
+    @classmethod
+    def tuple_to_game(cls):
+        pass
