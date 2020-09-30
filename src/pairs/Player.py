@@ -1,3 +1,5 @@
+import copy
+
 class Player:
     def __init__(self, original_deck, points=0, hand_state=None, hand_capacity=None):
         self.original_deck = original_deck
@@ -20,7 +22,8 @@ class Player:
             self.hand_state[card_type] = 0
 
     def deepcopy(self):
-        c = Player(self.original_deck.deepcopy(), self.points, self.hand_state.deepcopy(), self.hand_capacity.deepcopy())
+        c = Player(copy.deepcopy(self.original_deck), self.points, copy.deepcopy(self.hand_state),
+                   copy.deepcopy(self.hand_capacity))
         return c
 
 
