@@ -32,6 +32,7 @@ class DPSolver:
             draw_probabilities = np.roll(
                 sum(prob * self.solve(draw_state) for draw_state, prob in game_state.next_draw_states()), 1)
             self.fifty_percent(game_state, table_index)
+            self.expected_point(game_state, table_index)
             if fold_probabilities is None or draw_probabilities[0] > fold_probabilities[0]:
                 self.action_table[table_index] = True
                 self.dp_table[table_index] = draw_probabilities
