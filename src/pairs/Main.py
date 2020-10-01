@@ -10,9 +10,13 @@ def main():
     game = GameState(deck, 5, 2)
     solver = DPSolver(game)
     solver.solve(game)
-    print(solver.get_dp_table())
-    print("break")
-    print(solver.get_action_table())
+    #print(solver.get_dp_table())
+    #print("action table: ")
+    #print(solver.get_action_table())
+    #print("fifty_percent table: ")
+    #print(solver.get_fifty_percent_table())
+    #print("expected point table: ")
+    #print(solver.get_expected_point_action_table())
 
 
 if __name__ == "__main__":
